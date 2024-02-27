@@ -25,47 +25,59 @@
 
   h2 {
     text-align: center;
+    margin-bottom: 10px;
   }
 
-  input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
+  .code-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .code {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 20px;
+    margin: 0 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 16px;
-  }
-
-  button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background-color: #0056b3;
   }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <h2>OTP Verification</h2>
-  <input type="text" id="otpInput" placeholder="Enter OTP">
-  <button onclick="verifyOTP()">Verify OTP</button>
+  <h2 id="verification_heading">OTP Verification</h2>
+  <p id="verification_subtext">Please enter the 6-digit OTP sent to your phone</p>
+  <div class="code-container">
+    <input type="text" class="code" maxlength="1" oninput="focusNext(event, 1)">
+    <input type="text" class="code" maxlength="1" oninput="focusNext(event, 2)">
+    <input type="text" class="code" maxlength="1" oninput="focusNext(event, 3)">
+    <input type="text" class="code" maxlength="1" oninput="focusNext(event, 4)">
+    <input type="text" class="code" maxlength="1" oninput="focusNext(event, 5)">
+    <input type="text" class="code" maxlength="1" oninput="focusNext(event, 6)">
+  </div>
 </div>
 
 <script>
-  function verifyOTP() {
-    var enteredOTP = document.getElementById("otpInput").value;
-    // Here you can add logic to verify the OTP
-    // For now, let's just log the entered OTP
-    console.log("Entered OTP: " + enteredOTP);
+  function focusNext(event, nextInput) {
+    const target = event.target;
+    const maxLength = parseInt(target.getAttribute("maxlength"));
+    const myLength = target.value.length;
+    if (myLength >= maxLength) {
+      const next = document.getElementsByClassName("code")[nextInput - 1];
+      if (next != null) {
+        next.focus();
+      }
+    }
+
+    if (event.inputType === 'deleteContentBackward' && myLength === 0) {
+      const prev = document.getElementsByClassName("code")[nextInput - 2];
+      if (prev != null) {
+        prev.focus();
+      }
+    }
   }
 </script>
 
